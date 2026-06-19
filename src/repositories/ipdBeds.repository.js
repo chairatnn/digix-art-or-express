@@ -12,14 +12,20 @@ async function getAllBeds(search = "") {
 
   // ถ้ามีค่า search ให้เพิ่มเงื่อนไขกรองข้อมูล
   if (search) {
-    query += ` WHERE bed_number ILIKE $1 OR ward_name ILIKE $1`;
-    params.push(`%${search}%`); // ค้นหาแบบบางส่วน (Contains)
+    query += ` WHERE bed_number ILIKE $1 OR ward_name ILIKE $1 OR status ILIKE $1`;
+    params.push(`%${search}%`);
   }
 
   query += ` ORDER BY ward_name ASC, bed_number ASC;`;
 
   const { rows } = await pool.query(query, params);
   return rows;
+}
+
+async function getBedCountByStatus(status) {
+  const query = `SELECT COUNT(*) as count FROM ${qualify("ipd_beds")} WHERE status = $1;`;
+  const { rows } = await pool.query(query, [status]);
+  return parseInt(rows[0].count, 10);
 }
 
 async function insertBed(data) {
@@ -56,4 +62,4 @@ async function deleteBed(id) {
   return rowCount > 0;
 }
 
-module.exports = { getAllBeds, insertBed, updateBed, findById, deleteBed };
+module.exports = { getAllBeds, insertBed, updateBed, findById, deleteBed, getBedCountByStatus };
