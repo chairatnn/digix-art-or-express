@@ -15,7 +15,16 @@ const roomsRoutes = require('./routes/rooms.routes');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://digix-art-or-web.vercel.app', 
+    'http://localhost:3000'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'], // 👈 สำคัญมาก! ต้องระบุเพื่อให้ส่ง Token ได้
+  credentials: true
+}));
+
 app.use(express.json());
 
 // --- General Routes ---
