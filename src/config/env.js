@@ -1,7 +1,7 @@
 // src/config/env.js (Backend)
-const dotenv = require('dotenv');
 
-dotenv.config();
+//const dotenv = require('dotenv');
+// dotenv.config();
 
 function requireEnv(name) {
   const value = process.env[name];
